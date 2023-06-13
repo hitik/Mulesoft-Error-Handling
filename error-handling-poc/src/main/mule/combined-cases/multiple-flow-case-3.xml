@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="combined-multiple-flow-case-3-main" doc:id="195a64d0-01f7-463e-9d18-b5c9573b0b70" >
+		<http:listener doc:name="combined/multiple/case-3" doc:id="932906fb-0cad-4581-9c34-222ffd546e5f" config-ref="HTTP_Listener_config" path="combined/multiple/case-3"/>
+	<set-payload value="Success - Started Main Flow" doc:name="FV SET Success - Started Main Flow" doc:id="c655f497-c045-41db-91a2-ceee61e46d50" />
+		<flow-ref doc:name="Refer to combined-multiple-flow-case-3-child" doc:id="662ab3db-0dcf-4ff9-83cf-baca597f8124" name="combined-multiple-flow-case-3-child" />
+		<set-payload value="Success - End of Main Flow" doc:name="FV SET Success - End of Main Flow" doc:id="ee2aae50-1cc5-465c-9024-48315ae0c8e6" />
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="3fc4733e-e519-493a-82d6-e527282b1768" type="EXPRESSION">
+				<set-payload value="Error - Error Handler in Main Flow (oec)" doc:name="FV SET Error - Error Handler in Main Flow (oec)" doc:id="05c9e601-9616-4f26-b546-8f5164d8e4fe" />
+			</on-error-continue>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="50a7cba1-4dfd-476f-8b4d-175b40949530" >
+				<set-payload value="Error - Error Handler in Main Flow (oep)" doc:name="FV SET Error - Error Handler in Main Flow (oep)" doc:id="840f44f4-c44d-4d8b-a157-3bdad5ceb0da" />
+			</on-error-propagate>
+		
+</error-handler>
+	</flow>
+	<flow name="combined-multiple-flow-case-3-child" doc:id="befb1f90-42e2-4109-aff0-34cce9d89255" >
+		<validation:is-number numberType="DOUBLE" doc:id="4a4cf350-cbe3-49dd-b504-79b278e9e61f" value="#[payload]" />
+		<set-payload value="Success - End of Child Flow" doc:name="FV SET Success - End of Child Flow" doc:id="459ed9e7-05d7-4cdc-b0b1-361528450728" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="88fd2811-2f45-4322-b0d9-32dec39e8db9" type="VALIDATION:INVALID_NUMBER">
+				<set-payload value="Error - Error Handler in Child Flow (oep)" doc:name="FV SET Error - Error Handler in Child Flow (oep)" doc:id="ab1715a2-43e8-4565-b2a6-d67c62cc6cda" />
+			</on-error-propagate>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="33802be8-e400-4a86-9cc2-c7c94f026c08" type="VALIDATION:INVALID_NUMBER">
+				<set-payload value="Error - Error Handler in Child Flow (oec)" doc:name="FV SET Error - Error Handler in Child Flow (oec)" doc:id="938da88c-593c-4721-98ab-56f55b5b874f" />
+			</on-error-continue>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="0326cc26-5388-49f1-9140-8685a7083a8a" >
+				<set-payload value="Error - Error Handler in Child Flow (oep)" doc:name="FV SET Error - Error Handler in Child Flow (oep)" doc:id="c5c7905b-2931-497c-ac16-772025c289b0" />
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>

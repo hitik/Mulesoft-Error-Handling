@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="cc8a71d2-59eb-440a-995e-7ca6437f36d4" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="error-handling-default-case-1" doc:id="f4d10709-2b59-4721-abc0-7121d100ea18" >
+		<http:listener doc:name="default/case-1" doc:id="34102151-f97b-484f-bc5f-78e326737715" path="default/case-1" config-ref="HTTP_Listener_config"/>
+		<raise-error doc:name="Raise error" doc:id="5775f421-07c3-4eff-9a93-47c2392bab25" type="HTTP:INTENTIONALLY_INDUCED" description="HTTP Intentionally induced error"/>
+	</flow>
+</mule>

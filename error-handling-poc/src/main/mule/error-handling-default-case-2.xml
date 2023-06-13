@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="error-handling-default-case-2" doc:id="f4d10709-2b59-4721-abc0-7121d100ea18" >
+		<http:listener doc:name="default/case-2" doc:id="34102151-f97b-484f-bc5f-78e326737715" path="default/case-2" config-ref="HTTP_Listener_config"/>
+		<raise-error doc:name="Raise error" doc:id="5775f421-07c3-4eff-9a93-47c2392bab25" type="HTTP:INTENTIONALLY_INDUCED" description="HTTP Intentionally induced error"/>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="4b7c3493-49a0-4e9d-8323-0ded5fc09db8" >
+				<raise-error doc:name="Raise error OEC:ERROR" doc:id="6d4e2e12-f6bd-4bad-a8e9-8d007e80571d" type="OEC:ERROR" description="Error Raised inside OEC"/>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

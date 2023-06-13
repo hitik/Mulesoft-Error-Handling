@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="oec-multiple-flow-case-3-main" doc:id="195a64d0-01f7-463e-9d18-b5c9573b0b70" >
+		<http:listener doc:name="oec/multiple/case-3" doc:id="932906fb-0cad-4581-9c34-222ffd546e5f" config-ref="HTTP_Listener_config" path="oec/multiple/case-3"/>
+	<set-payload value="Success - Started Main Flow" doc:name="FV SET Success - Started Main Flow" doc:id="c655f497-c045-41db-91a2-ceee61e46d50" />
+		<flow-ref doc:name="Refer to oec-multiple-flow-case-3-child" doc:id="662ab3db-0dcf-4ff9-83cf-baca597f8124" name="oec-multiple-flow-case-3-child" />
+		<set-payload value="Success - End of Main Flow" doc:name="FV SET Success - End of Main Flow" doc:id="ee2aae50-1cc5-465c-9024-48315ae0c8e6" />
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="5ca2d36f-66ab-4a94-9e74-9553837741d9" >
+				<set-payload value="Error - Error Handler in Main Flow (oec)" doc:name="FV SET Error - Error Handler in Main Flow (oec)" doc:id="05c9e601-9616-4f26-b546-8f5164d8e4fe" />
+			
+</on-error-continue>
+		</error-handler>
+	</flow>
+	<flow name="oec-multiple-flow-case-3-child" doc:id="befb1f90-42e2-4109-aff0-34cce9d89255" >
+		<validation:is-number numberType="DOUBLE" doc:id="4a4cf350-cbe3-49dd-b504-79b278e9e61f" value="#[payload]" />
+		<set-payload value="Success - End of Child Flow" doc:name="FV SET Success - End of Child Flow" doc:id="459ed9e7-05d7-4cdc-b0b1-361528450728" />
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="322c89f8-b01e-4538-bd43-e2b5fb2c6d6c" >
+				<set-payload value="Error - Error Handler in Child Flow (oec)" doc:name="FV SET Error - Error Handler in Child Flow (oec)" doc:id="8b1a882a-0fe4-4bd9-a34d-096a6740e7df" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

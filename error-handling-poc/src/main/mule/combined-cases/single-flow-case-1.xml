@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd">
+	<flow name="combined-single-flow-case-1" doc:id="24202aef-40f6-4c0e-97f0-f3fa63cf9f66" >
+		<http:listener doc:name="combined/single/case-1" doc:id="fb8d62d5-1f77-480f-936d-9bc65a18acdb" config-ref="HTTP_Listener_config" path="combined/single/case-1"/>
+		<set-payload value="Success - Flow Started" doc:name="FV SET Success - Flow Started" doc:id="907b4c4d-e354-41f2-a6fe-edddc97e3735" />
+		<validation:is-number numberType="DOUBLE" doc:id="6491fe37-723d-42e2-bb44-b09e4e028c1b" value="#[payload]"/>
+		<set-payload value="Success - End of Flow" doc:name="FV SET Success - End of Flow" doc:id="a2bc727b-50c2-4d70-8aaa-6380feb85a61" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="01218c86-1a1d-416d-98a1-f4fa00eae1ad" type="HTTP:CONNECTIVITY">
+				<set-payload value="Error - Error Handler (oep)" doc:name="FV SET Error - Error Handler (oep)" doc:id="3c41a616-8d3f-4c25-bb55-5c0c820f1ab3" />
+			</on-error-propagate>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="66e4e6f8-19ac-4a4b-9fc7-dd06aca1a3b8" type="HTTP:CONNECTIVITY, VALIDATION:INVALID_NUMBER">
+				<set-payload value="Error - Error Handler (oec)" doc:name="FV SET Error - Error Handler (oec)" doc:id="4bfb6b1b-1488-450b-bd3d-c95796db5278" />
+			</on-error-continue>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="18be3ae5-58f3-4d35-ab50-e7bd78fa3d0d">
+				<set-payload value="Error - Error Handler (oec)" doc:name="FV SET Error - Error Handler (oec)" doc:id="cd7cadd1-00be-4979-a1fc-64fab6875682" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

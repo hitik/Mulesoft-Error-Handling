@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="oep-try-catch-case-single-flow" doc:id="f8cfeca8-9a3e-46be-aeff-e3d5910d126e" >
+		<http:listener doc:name="oep/tcc/single" doc:id="953c35ae-ce04-4e80-a001-2a809ac7fe37" config-ref="HTTP_Listener_config" path="oep/tcc/single">
+			<http:error-response >
+				<http:body ><![CDATA[#[payload]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<set-payload value="Success - Flow Started" doc:name="FV SET Success - Flow Started" doc:id="48f5ac8d-2d5f-405f-8d25-6eb0c77ac053" />
+		<try doc:name="Try" doc:id="2fe4f1c0-cffd-402c-802b-e612e9e55f8c" >
+			<validation:is-number numberType="DOUBLE" doc:id="1329ef7d-f445-44c0-b148-af60a5487a1d" value="#[payload]" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="69eef959-4dbf-43e2-830a-5f931baadd5c" >
+					<set-payload value="Error - True Catch Error Handler (oec)" doc:name="FV SET Error - True Catch Error Handler (oec)" doc:id="dea4e915-5ee3-42fa-b637-82eddf173881" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<set-payload value="Success - End of Flow" doc:name="FV SET Success - End of Flow" doc:id="98370ea6-cbd6-43b0-87ca-437bd958f60c" />
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="6a9d4801-bb20-4477-b6c3-641076e1ea5d" >
+				<set-payload value="Error - Error Handler" doc:name="FV SET Error - Error Handler" doc:id="dd04b83f-0535-49bf-a7e1-3af49d0a4f21" />
+			</on-error-propagate>
+
+		</error-handler>
+	</flow>
+</mule>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="oep-try-catch-case-multiple-flow-case-1-main" doc:id="b38234b2-9d5c-4706-9bd0-8325e813c1cb" >
+		<http:listener doc:name="oep/tcc/multiple/case-1" doc:id="52c9289b-11d6-400a-9974-c5b01b737cef" config-ref="HTTP_Listener_config" path="oep/tcc/multiple/case-1"/>
+		<set-payload value="Success - Started Main Flow" doc:name="FV SET Success - Started Main Flow" doc:id="ee9e4df9-aee9-44ff-ae09-6991c4709c6d" />
+		<flow-ref doc:name="Refer to oep-try-catch-case-multiple-flow-child" doc:id="08b87586-1c7c-4922-b193-bf057e769dfe" name="oep-try-catch-case-multiple-flow-case-2-child" />
+		<set-payload value="Success - End of Main Flow" doc:name="FV SET Success - End of Main Flow" doc:id="0634c30f-0afc-42fa-89b1-e7205a9bf888" />
+	</flow>
+	<flow name="oep-try-catch-case-multiple-flow-case-1-child" doc:id="21cc8d02-0f7b-4674-8e85-c08191372722" >
+		<try doc:name="Try" doc:id="0aa435aa-f494-4430-aef5-36e0acf98073" >
+			<validation:is-number numberType="DOUBLE" doc:id="218680fb-5acf-415f-967b-6f9cdc57b3cf" value="#[payload]" />
+			<error-handler >
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="1f94b43b-f517-4bc3-9776-b97bd39870e9" >
+					<set-payload value="Error - Try Catch Error Handler in Child Flow (oep)" doc:name="FV SET Error - Try Catch Error Handler (oep)" doc:id="d4ccd943-b1e2-4407-b625-8e4643bd45a3" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
+		<set-payload value="Success - End of Child Flow" doc:name="FV SET Success - End of Child Flow" doc:id="fce1507e-6e88-49b7-bf4a-f55c05036c62" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="e8aeb739-cdd2-4059-aab3-de2962fd83bf" >
+				<set-payload value="Error - Error Handler in Child Flow (oep)" doc:name="FV SET Error - Error Handler in Child Flow (oep)" doc:id="fa846a6a-60aa-4db5-b701-4bf458aa5eac" />
+			</on-error-propagate>
+		
+</error-handler>
+	</flow>
+</mule>

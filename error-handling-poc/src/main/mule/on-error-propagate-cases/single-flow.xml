@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="oep-single-flow" doc:id="b4343559-f59f-4c16-b56c-feffe90e1874" >
+		<http:listener doc:name="oep/single" doc:id="f1ffca22-bd0f-4a01-a7dd-d4c49508a2d5" config-ref="HTTP_Listener_config" path="oep/single">
+			<http:error-response >
+				<http:body ><![CDATA[#[payload]]]></http:body>
+			</http:error-response>
+		</http:listener>
+		<set-payload value="Success - Flow Started" doc:name="FV SET Success - Flow Started" doc:id="ee8ca65d-b8a7-462f-87cc-7a7271028fbf" />
+		<validation:is-number numberType="DOUBLE" doc:id="4a8d271e-6b87-4656-a6c1-c00f887ceb00" value="#[payload]"/>
+		<set-payload value="Success - End of Flow" doc:name="FV SET Success - End of Flow" doc:id="a1ea7630-2864-4ef9-b9df-d8a536513109" />
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f30300a1-876b-4a9d-b766-365eddad2c93" >
+				<set-payload value="Error - Error Handler (oep)" doc:name="FV SET Error - Error Handler (oep)" doc:id="fecd456a-81a9-4b4d-962e-4083337d4045" />
+			</on-error-propagate>
+		</error-handler>	
+</flow>
+</mule>

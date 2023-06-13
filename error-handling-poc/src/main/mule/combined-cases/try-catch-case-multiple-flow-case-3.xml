@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="combined-try-catch-case-multiple-flow-case-3-main" doc:id="b38234b2-9d5c-4706-9bd0-8325e813c1cb" >
+		<http:listener doc:name="combined/tcc/multiple/case-3" doc:id="52c9289b-11d6-400a-9974-c5b01b737cef" config-ref="HTTP_Listener_config" path="combined/tcc/multiple/case-3"/>
+		<set-payload value="Success - Started Main Flow" doc:name="FV SET Success - Started Main Flow" doc:id="ee9e4df9-aee9-44ff-ae09-6991c4709c6d" />
+		<flow-ref doc:name="Refer to combined-try-catch-case-multiple-flow-child" doc:id="08b87586-1c7c-4922-b193-bf057e769dfe" name="combined-try-catch-case-multiple-flow-case-3-child" />
+		<set-payload value="Success - End of Main Flow" doc:name="FV SET Success - End of Main Flow" doc:id="0634c30f-0afc-42fa-89b1-e7205a9bf888" />
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f9a0e765-f4b7-4b28-aeb5-d83966267877">
+				<set-payload value="Error - Error Handler in Main Flow (oec)" doc:name="FV SET Error - Error Handler in Main Flow (oec)" doc:id="6345ef63-4d50-476d-84b1-242c81fe1995" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+	<flow name="combined-try-catch-case-multiple-flow-case-3-child" doc:id="21cc8d02-0f7b-4674-8e85-c08191372722" >
+		<try doc:name="Try" doc:id="0aa435aa-f494-4430-aef5-36e0acf98073" >
+			<validation:is-number numberType="DOUBLE" doc:id="218680fb-5acf-415f-967b-6f9cdc57b3cf" value="#[payload]" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b2f1f1b3-d06d-44a6-aca5-d0a2ffd2f5f9" type="STREAM_MAXIMUM_SIZE_EXCEEDED">
+					<set-payload value="Error - Try Catch Error Handler in Child Flow (oec)" doc:name="FV SET Error - Try Catch Error Handler (oec)" doc:id="d4ccd943-b1e2-4407-b625-8e4643bd45a3" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<set-payload value="Success - End of Child Flow" doc:name="FV SET Success - End of Child Flow" doc:id="fce1507e-6e88-49b7-bf4a-f55c05036c62" />
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f4a62c20-71a5-4881-82df-e484b63c99b5" type="EXPRESSION">
+				<set-payload value="Error - Error Handler in Child Flow (oep)" doc:name="FV SET Error - Error Handler in Child Flow (oep)" doc:id="fa846a6a-60aa-4db5-b701-4bf458aa5eac" />
+			</on-error-propagate>
+		
+</error-handler>
+	</flow>
+</mule>

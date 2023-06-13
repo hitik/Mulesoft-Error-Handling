@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="oec-try-catch-case-single-flow" doc:id="fe13fb07-9154-4876-9cd2-40ee2593f8d0" >
+		<http:listener doc:name="oec/tcc/single" doc:id="81c1493a-a4a5-48ca-88c2-97903b7dbd1f" config-ref="HTTP_Listener_config" path="oec/tcc/single"/>
+		<set-payload value="Success - Flow Started" doc:name="FV SET Success - Flow Started" doc:id="c5468b23-dd90-4e19-9a81-9d33f54f1fd6" />
+		<try doc:name="Try" doc:id="5fd4af01-e362-428b-8856-1df5cdd053c9" >
+			<validation:is-number numberType="DOUBLE" doc:id="63c6c498-081c-4e00-9c54-54f54d98e451" value="#[payload]" />
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="1270a0e3-29a1-47eb-88de-4996cc72585a" >
+					<set-payload value="Error - True Catch Error Handler (oec)" doc:name="FV SET Error - True Catch Error Handler (oec)" doc:id="d04f4ab2-169a-417d-b160-7af1889c17ea" />
+				</on-error-continue>
+			</error-handler>
+		</try>
+		<set-payload value="Success - End of Flow" doc:name="FV SET Success - End of Flow" doc:id="ac2bbffa-cbce-4771-af29-c3bf8bcc782d" />
+		<error-handler>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a847d37f-0f8e-4e28-b641-43a326bec22f">
+				<set-payload value="Error - Global Error Handler (oec)" doc:name="FV SET Error - Error Handler (oec)" doc:id="0e3a94e2-d767-4117-8ded-7d84ff2c3187" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>
